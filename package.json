@@ -1,0 +1,31 @@
+{
+  "name": "js-algorithm-study",
+  "version": "0.1.0",
+  "description": "Hobby project for JavaScript/Algorithm Students",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node_modules/.bin/mocha --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nobishino/js-algorithm-study.git"
+  },
+  "keywords": [
+    "JavaScript",
+    "Algorithm"
+  ],
+  "author": "nobisihno",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nobishino/js-algorithm-study/issues"
+  },
+  "homepage": "https://github.com/nobishino/js-algorithm-study#readme"
+}
