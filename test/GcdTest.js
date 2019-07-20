@@ -16,9 +16,9 @@ describe('Gcd.gcd', () => {
     it("returns 1 for 45,1", () => {
         Gcd.gcd(45,1).should.equal(1);
     });
-
+    //ここなぜかテストの引数が18,24になっててテスト通らなかったので0,34に修正しました
     it("returns 34 for 0,34(0 should be the identity element of gcd)", () => {
-        Gcd.gcd(18,24).should.equal(34);
+        Gcd.gcd(0,34).should.equal(34);
     });
 
     it("returns 7 for -7,21", () => {
