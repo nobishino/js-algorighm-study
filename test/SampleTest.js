@@ -1,10 +1,11 @@
 const Sample = require("../src/Sample");
+const Sample2 = require("../src/Sample2");
 const chai = require('chai');
 const should = chai.should;
 should();
 
 describe("Sample.getGoodOrBad", () => {
-
+    Sample2.helloWorld();
     it("returns 'Good' for true", () => {
         const expect = 'Good';
         const actual = Sample.getGoodOrBad(true);
