@@ -24,7 +24,23 @@
  * gcd(10218237918,46172874918) //186 ユークリッド互除法はとても速いので。
  */
 function gcd(x,y) {
-    return 0; //TODO: implement
+    function gcd(x,y) {
+        if(x<y){
+            let tmp = x;
+            x = y;
+            y = tmp;
+        }
+        
+        let r = x%y;
+        
+        while(r!==0){
+            x = y;
+            y = r;
+            r = x%y;
+        }
+        
+            return r; //TODO: implement
+        }        
 }
 
 module.exports = {
