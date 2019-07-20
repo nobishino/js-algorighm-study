@@ -1,1 +1,1 @@
-/node_modules/.bin/jsdoc -d docs/ ./src
+./node_modules/.bin/jsdoc -d docs/ ./src
