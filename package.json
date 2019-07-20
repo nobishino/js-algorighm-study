@@ -7,11 +7,13 @@
     "test": "test"
   },
   "dependencies": {
-    "chai": "^4.2.0",
     "jsdoc": "^3.6.3",
     "mocha": "^6.2.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "should": "^13.2.3"
+  },
   "scripts": {
     "test": "node_modules/.bin/mocha --recursive"
   },
