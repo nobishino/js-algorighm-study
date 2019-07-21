@@ -30,13 +30,10 @@
             x = y;
             y = tmp;
         }
-        console.log("xは"+x)
-        console.log("yは"+y)
         if(y==0){
             return x;
         }
         let r = x%y;
-        console.log(r);
         while(r!==0){
             x = y;
             y = r;
@@ -49,7 +46,7 @@
             y=x;
         }
 
-        return y; //TODO: implement 
+        return y;
     }
 
 module.exports = {
