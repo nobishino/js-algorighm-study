@@ -102,16 +102,9 @@ class Itertools {
     static accumulate(iterable, func = (a, b) => a + b) {
         return ({
             [Symbol.iterator]: function* () {
-                const it = iterable[Symbol.iterator]();
                 let acc;
-                while (true) {
-                    let { value, done } = it.next();
-                    if (done) return;
-                    if (acc === undefined) {
-                        acc = value;
-                    } else {
-                        acc = func(acc, value);
-                    }
+                for (let elem of iterable) {
+                    acc = acc ? func(acc,elem) : elem; //初期値がないので場合分けする
                     yield acc;
                 }
             }
