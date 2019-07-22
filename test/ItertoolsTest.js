@@ -16,7 +16,7 @@ describe("Itertools.count", () => {
     });
 
     it("step = 3 => 1,4,7,10...", () => {
-        const it = Itertools.count(1,3);
+        const it = Itertools.count(1, 3);
         let index = 1;
         for (let value of it) {
             value.should.equal(index);
@@ -30,13 +30,13 @@ describe("Itertools.count", () => {
 describe("Itertools.range", () => {
 
     it("returns finite iterator", () => {
-        const it = Itertools.range(10,100);
+        const it = Itertools.range(10, 100);
         let idx = 10;
         let minValue = 10000000;
         let maxValue = -1000000;
         for (let value of it) {
-            minValue = Math.min(value,minValue);
-            maxValue = Math.max(value,maxValue);
+            minValue = Math.min(value, minValue);
+            maxValue = Math.max(value, maxValue);
             value.should.equal(idx);
             idx++;
         }
@@ -45,13 +45,13 @@ describe("Itertools.range", () => {
     });
 
     it("returns finite iterator of step 7", () => {
-        const it = Itertools.range(5,68,7);
+        const it = Itertools.range(5, 68, 7);
         let expect = 5;
         let maxValue = 0;
         for (let value of it) {
             value.should.equal(expect);
             expect += 7;
-            maxValue = Math.max(value,maxValue);
+            maxValue = Math.max(value, maxValue);
         }
         maxValue.should.equal(61); //[start, end) - end argument is excluded from range.
     });
@@ -59,37 +59,37 @@ describe("Itertools.range", () => {
 });
 
 describe("Iteratools.cycle", () => {
-    it ("works for array", () => {
-        const array = [0,3,6,9,12];
+    it("works for array", () => {
+        const array = [0, 3, 6, 9, 12];
         const it = Itertools.cycle(array);
         let expect = 0;
         let index = 0;
         for (let value of it) {
             value.should.equal(expect);
-            expect = (expect + 3)%15;
+            expect = (expect + 3) % 15;
             index++;
             if (index > 100) break;
         }
     });
 
-    it ("works for string", () => {
+    it("works for string", () => {
         const string = "ABCDEFG";
         const it = Itertools.cycle(string);
         let index = 0;
         for (let value of it) {
-            let expect = string[index%7];
+            let expect = string[index % 7];
             value.should.equal(expect);
             index++;
             if (index > 100) break;
         }
     });
 
-    it ("works for other iterable", () => {
-        const range = Itertools.range(1,4,1);
+    it("works for other iterable", () => {
+        const range = Itertools.range(1, 4, 1);
         const it = Itertools.cycle(range);
         let index = 0;
         for (let value of it) {
-            let expect = index%3 + 1;
+            let expect = index % 3 + 1;
             value.should.equal(expect);
             index++;
             if (index > 100) break;
@@ -98,13 +98,65 @@ describe("Iteratools.cycle", () => {
 });
 
 describe("Itertools.repeat", () => {
-    it ("returns iterable object which yields same value endlessly", () => {
+    it("returns iterable object which yields same value endlessly", () => {
         const it = Itertools.repeat("VALUE");
         let index = 0;
         for (let value of it) {
             value.should.equal("VALUE");
             index++;
-            if(index > 100) break;
+            if (index > 100) break;
         }
     });
+});
+
+describe("Itertools.accumulate", () => {
+
+    it("returns empty iterable for empty input", () => {
+        const actual = Itertools.accumulate([]);
+        [...actual].should.have.lengthOf(0);
+    });
+
+    it("returns [1] for [1]", () => {
+        const actual = Itertools.accumulate([1]);
+        expect = [1];
+        let index = 0;
+        for (let value of actual) {
+            value.should.equal(expect[index]);
+            index++;
+        }
+    });
+
+    it("returns [1,3,6,10,15] for [1,2,3,4,5]", () => {
+        const arg = [1, 2, 3, 4, 5];
+        const actual = Itertools.accumulate(arg);
+        expect = [1, 3, 6, 10, 15];
+        let index = 0;
+        for (let value of actual) {
+            value.should.equal(expect[index]);
+            index++;
+        }
+    });
+
+    it("returns [1,2,6,24,120] for [1,2,3,4,5] and (a,b)=>a*b", () => {
+        const arg = [1, 2, 3, 4, 5];
+        const actual = Itertools.accumulate(arg, (a, b) => a * b);
+        expect = [1, 2, 6, 24, 120];
+        let index = 0;
+        for (let value of actual) {
+            value.should.equal(expect[index]);
+            index++;
+        }
+    });
+
+    it("can process other iterable object", () => {
+        const arg = Itertools.range(2, 10, 3); //[2,5,8]
+        const actual = Itertools.accumulate(arg, (a, b) => a * a + b);
+        let expect = [2, 9, 89];
+        let index = 0;
+        for (let value of actual) {
+            value.should.equal(expect[index]);
+            index++;
+        }
+    });
+
 });
