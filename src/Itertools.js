@@ -110,6 +110,24 @@ class Itertools {
             }
         });
     }
+
+    /**
+     * 
+     * tupleがないので、配列のIterableを返却する？
+     * 
+     * @param {*} args 
+     */
+    static product(...args) {
+        return ({
+            [Symbol.iterator]: function*() {
+                for (let a of args[0]) {
+                    for (let b of args[1]) {
+                        yield [a,b];
+                    }
+                }
+            }
+        });
+    }
 }
 
 module.exports = Itertools;

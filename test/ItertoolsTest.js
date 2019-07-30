@@ -1,6 +1,7 @@
 const Itertools = require('../src/Itertools');
 const chai = require('chai');
 const should = chai.should;
+const expect = chai.expect;
 should();
 
 describe("Itertools.count", () => {
@@ -46,11 +47,11 @@ describe("Itertools.range", () => {
 
     it("returns finite iterator of step 7", () => {
         const it = Itertools.range(5, 68, 7);
-        let expect = 5;
+        let expectation = 5;
         let maxValue = 0;
         for (let value of it) {
-            value.should.equal(expect);
-            expect += 7;
+            value.should.equal(expectation);
+            expectation += 7;
             maxValue = Math.max(value, maxValue);
         }
         maxValue.should.equal(61); //[start, end) - end argument is excluded from range.
@@ -62,11 +63,11 @@ describe("Iteratools.cycle", () => {
     it("works for array", () => {
         const array = [0, 3, 6, 9, 12];
         const it = Itertools.cycle(array);
-        let expect = 0;
+        let expectation = 0;
         let index = 0;
         for (let value of it) {
-            value.should.equal(expect);
-            expect = (expect + 3) % 15;
+            value.should.equal(expectation);
+            expectation = (expectation + 3) % 15;
             index++;
             if (index > 100) break;
         }
@@ -77,8 +78,8 @@ describe("Iteratools.cycle", () => {
         const it = Itertools.cycle(string);
         let index = 0;
         for (let value of it) {
-            let expect = string[index % 7];
-            value.should.equal(expect);
+            let expectation = string[index % 7];
+            value.should.equal(expectation);
             index++;
             if (index > 100) break;
         }
@@ -89,8 +90,8 @@ describe("Iteratools.cycle", () => {
         const it = Itertools.cycle(range);
         let index = 0;
         for (let value of it) {
-            let expect = index % 3 + 1;
-            value.should.equal(expect);
+            let expectation = index % 3 + 1;
+            value.should.equal(expectation);
             index++;
             if (index > 100) break;
         }
@@ -118,10 +119,10 @@ describe("Itertools.accumulate", () => {
 
     it("returns [1] for [1]", () => {
         const actual = Itertools.accumulate([1]);
-        expect = [1];
+        expectation = [1];
         let index = 0;
         for (let value of actual) {
-            value.should.equal(expect[index]);
+            value.should.equal(expectation[index]);
             index++;
         }
     });
@@ -129,10 +130,10 @@ describe("Itertools.accumulate", () => {
     it("returns [1,3,6,10,15] for [1,2,3,4,5]", () => {
         const arg = [1, 2, 3, 4, 5];
         const actual = Itertools.accumulate(arg);
-        expect = [1, 3, 6, 10, 15];
+        expectation = [1, 3, 6, 10, 15];
         let index = 0;
         for (let value of actual) {
-            value.should.equal(expect[index]);
+            value.should.equal(expectation[index]);
             index++;
         }
     });
@@ -140,10 +141,10 @@ describe("Itertools.accumulate", () => {
     it("returns [1,2,6,24,120] for [1,2,3,4,5] and (a,b)=>a*b", () => {
         const arg = [1, 2, 3, 4, 5];
         const actual = Itertools.accumulate(arg, (a, b) => a * b);
-        expect = [1, 2, 6, 24, 120];
+        expectation = [1, 2, 6, 24, 120];
         let index = 0;
         for (let value of actual) {
-            value.should.equal(expect[index]);
+            value.should.equal(expectation[index]);
             index++;
         }
     });
@@ -151,12 +152,57 @@ describe("Itertools.accumulate", () => {
     it("can process other iterable object", () => {
         const arg = Itertools.range(2, 10, 3); //[2,5,8]
         const actual = Itertools.accumulate(arg, (a, b) => a * a + b);
-        let expect = [2, 9, 89];
+        let expectation = [2, 9, 89];
         let index = 0;
         for (let value of actual) {
-            value.should.equal(expect[index]);
+            value.should.equal(expectation[index]);
             index++;
         }
     });
+
+});
+
+describe("Itertools.product", () => {
+    
+    it("can process an iterable object and a string", () => {
+        const numbers = Itertools.range(0,3);
+        const alphabets = "ABC";
+        const actual = Itertools.product(numbers,alphabets);
+        const expectation = [
+            [0,"A"],
+            [0,"B"],
+            [0,"C"],
+            [1,"A"],
+            [1,"B"],
+            [1,"C"],
+            [2,"A"],
+            [2,"B"],
+            [2,"C"],
+        ];
+        let index = 0;
+        for (let tuple of actual) {
+            expect(tuple).to.eql(expectation[index]);
+            index++;
+        }
+    });
+
+    // it("can process three iterable objects", () => {
+    //     const numbers1 = Itertools.range(0,2);
+    //     const numbers2 = Itertools.range(0,3);
+    //     const numbers3 = Itertools.range(2,5);
+    //     const iterable = Itertools.product(numbers1, numbers2, numbers3);
+    //     // const iterator = iterable[Symbol.iterator]();
+    //     for (let i = 0; i < 2; i++) {
+    //         for (let j = 0; j < 3; j++) {
+    //             for (let k = 2; k < 5; k++) {
+    //                 const expectation = [i,j,k];
+    //                 console.log(iterable);
+    //                 const [value,done] = iterable.next();
+    //                 expect(value).to.eql(expectation);
+    //             }
+    //         }
+    //     }
+    // }
+    // );
 
 });
