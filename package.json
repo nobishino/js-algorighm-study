@@ -12,10 +12,12 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "nyc": "^14.1.1",
     "should": "^13.2.3"
   },
   "scripts": {
-    "test": "node_modules/.bin/mocha --recursive"
+    "test": "node_modules/.bin/mocha --recursive",
+    "coverage": "nyc npm run test"
   },
   "repository": {
     "type": "git",

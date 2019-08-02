@@ -21,8 +21,16 @@ npm install
 
 ### Test
 
+テストの実行
+
 ```
 npm test
+```
+
+カバレッジレポートをみる
+
+```
+npm run coverage
 ```
 
 ## How to コントリビュート
