@@ -4,6 +4,7 @@
   "description": "Hobby project for JavaScript/Algorithm Students",
   "main": "index.js",
   "directories": {
+    "doc": "docs",
     "test": "test"
   },
   "dependencies": {
@@ -16,7 +17,7 @@
     "should": "^13.2.3"
   },
   "scripts": {
-    "test": "node_modules/.bin/mocha --recursive",
+    "test": "mocha --recursive",
     "coverage": "nyc npm run test"
   },
   "repository": {
@@ -25,10 +26,11 @@
   },
   "keywords": [
     "JavaScript",
-    "Algorithm"
+    "Algorithm",
+    "Competitive Programming"
   ],
-  "author": "nobisihno",
-  "license": "ISC",
+  "author": "nobishino",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/nobishino/js-algorithm-study/issues"
   },
