@@ -163,21 +163,21 @@ describe("Itertools.accumulate", () => {
 });
 
 describe("Itertools.product", () => {
-    
+
     it("can process an iterable object and a string", () => {
-        const numbers = Itertools.range(0,3);
+        const numbers = Itertools.range(0, 3);
         const alphabets = "ABC";
-        const actual = Itertools.product(numbers,alphabets);
+        const actual = Itertools.product(numbers, alphabets);
         const expectation = [
-            [0,"A"],
-            [0,"B"],
-            [0,"C"],
-            [1,"A"],
-            [1,"B"],
-            [1,"C"],
-            [2,"A"],
-            [2,"B"],
-            [2,"C"],
+            [0, "A"],
+            [0, "B"],
+            [0, "C"],
+            [1, "A"],
+            [1, "B"],
+            [1, "C"],
+            [2, "A"],
+            [2, "B"],
+            [2, "C"],
         ];
         let index = 0;
         for (let tuple of actual) {
@@ -204,5 +204,48 @@ describe("Itertools.product", () => {
     //     }
     // }
     // );
+
+});
+
+describe(`numericCombinations(length, takeNum)`, () => {
+
+    it(`(_, 0) -> [[]]`, () => {
+        expect(Itertools.numericCombinations(3, 0)).to.eql([[]]);
+    });
+    it(`(1, 1) -> [[0]]`, () => {
+        expect(Itertools.numericCombinations(1, 1)).to.eql([[0]]);
+    });
+    it(`(3, 2) -> [[1,2],[1,3],[2,3]]`, () => {
+        expect(Itertools.numericCombinations(3, 2)).to.eql([[0, 1], [0, 2], [1, 2]]);
+    });
+    it(`length of (10,3) === 120`, () => {
+        Itertools.numericCombinations(10, 3).should.have.lengthOf(120);
+    })
+});
+
+describe(`combinations()`, () => {
+
+    it(`引数が0である場合、配列[[]]を返す`, () => {
+        const collection = [1, 2, 3, 4, 5];
+        const emptyCombinations = Itertools.combinations(collection, 0);
+        expect(emptyCombinations).to.eql([[]]);
+    });
+
+    const isEquivalentCombinations = (combs1, combs2) =>
+        Itertools.hasSameElems(combs1, combs2, (a, b) => {
+            return Itertools.hasSameElems(a, b);
+        });
+
+    it(`引数が1以上である場合、配列の要素から2つ選んで作られる配列の全てからなる配列を返す(順序は定まっていない)`, () => {
+        const collection = [1, 2, 3, 4, 5];
+        const actualCombinations = Itertools.combinations(collection, 2);
+        const expectedMembers = [];
+        for (let i = 1; i <= 5; i++) {
+            for (let j = i + 1; j <= 5; j++) {
+                expectedMembers.push([i, j]);
+            }
+        }
+        expect(isEquivalentCombinations(actualCombinations, expectedMembers)).true;
+    });
 
 });

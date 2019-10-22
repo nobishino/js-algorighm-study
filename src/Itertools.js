@@ -128,6 +128,81 @@ class Itertools {
             }
         });
     }
+
+    /**
+     * 
+     * @param {number} length 
+     * @param {number} takeNum 
+     * @returns {number[][]}
+     */
+    static numericCombinations(length, takeNum) {
+        if (takeNum === 0) return [[]]; //Base Case
+        if (takeNum > length) return [];
+        //最後の要素を取らない場合の組み合わせ
+        const withoutLastElem = Itertools.numericCombinations(length - 1, takeNum);
+        //最後の要素をとる場合の残りの組み合わせ
+        const withLastElem = Itertools.numericCombinations(length - 1, takeNum - 1);
+        //最後の要素をとる場合の組み合わせを作る
+        withLastElem.forEach(function (combination) {
+            combination.push(length - 1);
+        });
+        //concatして返却する
+        const concatArray = withoutLastElem.concat(withLastElem);
+        return concatArray;
+    }
+
+
+    /**
+     * 
+     * @param {any[]} array 
+     * @param {number} takeNumber 
+     * @param {any[][]}
+     */
+    static combinations(array, takeNumber) {
+        const numericCombinations = Itertools.numericCombinations(array.length, takeNumber);
+        const combinationsArray = numericCombinations.map(function (indexArray) {
+            const combination = [];
+            for (let i = 0; i < takeNumber; i++) {
+                combination.push(array[indexArray[i]]);
+            }
+            return combination;
+        });
+        return combinationsArray;
+    }
+
+    /**
+     * 配列の順序を無視して、同一の要素を持つかどうかを判定する。
+     * 
+     * @param {any[]} array1
+     * @param {any[]} array2
+     * @param {function} [equality] 要素の一致判定に用いる等価性判定関数。指定しない場合、厳密等価演算子===を用いる。
+     * @returns {boolean} 
+     * 
+     */
+    static hasSameElems(array1, array2, equality) {
+        if (typeof equality !== 'function') {
+            equality = (a,b) => a===b; //デフォルトは厳密等価で判断する
+        }
+        if (array1.length !== array2.length) return false; //要素数が異なる時はfalse
+        const length = array1.length;
+        const matched = Array(length).fill(false);
+        for (let i = 0; i < length; i++) {
+            let success = false;
+            for (let j = 0; j < length; j++) {
+                if (matched[j]) continue;
+                if (equality(array1[i], array2[j])) {
+                    matched[j] = true;
+                    success = true;
+                    break;
+                }
+            }
+            if (!success) return false;
+        }
+        return true;
+    }
+
+
+
 }
 
 module.exports = Itertools;
