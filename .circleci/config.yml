@@ -1,37 +1,38 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
-version: 2
-jobs:
-  build:
-    docker:
-      # specify the version you desire here
-      - image: circleci/node:12.13.1
+version: 2 # CircleCI 2.0 を使用します
+jobs: # ステップの集合
+  build: # Workflows を使用しない実行では、エントリポイントとして `build` ジョブが必要
+    working_directory: ~/mern-starter # ステップが実行されるディレクトリ
+    docker: # Docker でステップを実行します
 
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
-
-    steps:
-      - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - run: yarn install
-
-      - save_cache:
+      - image: circleci/node:12.13.1 # このイメージをすべての `steps` が実行されるプライマリコンテナとして使用します
+      - image: mongo:3.4.4 # このイメージをセカンダリサービスコンテナとして使用します
+    steps: # 実行可能コマンドの集合
+      - checkout # ソースコードを作業ディレクトリにチェックアウトする特別なステップ
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
+      - restore_cache: # 依存関係キャッシュを復元する特別なステップ
+          # 依存関係キャッシュについては https://circleci.com/docs/ja/2.0/caching/ をお読みください
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: install-npm-wee
+          command: npm install
+      - save_cache: # 依存関係キャッシュを保存する特別なステップ
+          key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      # run tests!
-      - run: yarn test
+            - ./node_modules
+      - run: # テストを実行
+          name: test
+          command: npm test
+      - run: # カバレッジレポートを実行します
+          name: code-coverage
+          command: './node_modules/.bin/nyc report --reporter=text-lcov'
+      - store_artifacts: # テスト結果をアーティファクトとして保存する特別なステップ
+          # アーティファクト (https://circleci.com/docs/ja/2.0/artifacts/) に表示するテストサマリーをアップロードします
+          path: test-results.xml
+          prefix: tests
+      - store_artifacts: # アーティファクト (https://circleci.com/docs/ja/2.0/artifacts/) に表示するため
+          path: coverage
+          prefix: coverage
+      - store_test_results: # テストサマリー (https://circleci.com/docs/ja/2.0/collect-test-data/) に表示するため
+          path: test-results.xml
